@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "products")
-public class ProductModel {
-    public ProductModel() {
+public class Product {
+    public Product() {
     }
 
-    public ProductModel(String name, String description, Double price) {
+    public Product(String name, String description, Double price) {
         this.name = name;
         this.description = description;
         this.price = price;
