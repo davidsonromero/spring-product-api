@@ -2,6 +2,7 @@ package com.davidsonromero.api.products.productapi.controllers;
 
 import com.davidsonromero.api.products.productapi.models.Product;
 import com.davidsonromero.api.products.productapi.service.ProductService;
+import com.davidsonromero.api.products.productapi.dtos.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,7 +21,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping(path = "/")
-    @Operation(summary = "Returns all products", method = "GET", description = "Returns all products")
+    @Operation(summary = "Returns all products", method = "GET", description = "Returns all products.")
     @ApiResponse(responseCode = "200", description = "OK", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Product.class)))
     })
@@ -30,7 +31,7 @@ public class ProductController {
     }
 
     @GetMapping(path = "/find")
-    @Operation(summary = "Returns a product by id", method = "GET", description = "Returns a product by id")
+    @Operation(summary = "Returns a product by id", method = "GET", description = "Returns a product by id.")
     @ApiResponse(responseCode = "200", description = "OK", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class))
     })
@@ -41,7 +42,7 @@ public class ProductController {
     }
 
     @GetMapping(path = "/findPageable")
-    @Operation(summary = "Returns a product by id", method = "GET", description = "Returns products by page. Each page has the size provided by the user")
+    @Operation(summary = "Returns a product by id", method = "GET", description = "Returns products by page. Each page has the size provided by the user.")
     @ApiResponse(responseCode = "200", description = "OK", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Product.class)))
     })
@@ -52,30 +53,30 @@ public class ProductController {
     }
 
     @PostMapping(path = "/create")
-    @Operation(summary = "Creates a product", method = "POST", description = "Creates a product")
+    @Operation(summary = "Creates a product", method = "POST", description = "Creates a product. ID must be null.")
     @ApiResponse(responseCode = "201", description = "Product Created", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class))
     })
     @ApiResponse(responseCode = "400", description = "Bad Request")
     @ApiResponse(responseCode = "500", description = "Internal Server Error While Creating Product :(\nPlease Try Again Later")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        return ResponseEntity.created(null).body(productService.saveProduct(product));
+    public ResponseEntity<Product> createProduct(@RequestBody CreateProductDTO product) {
+        return ResponseEntity.created(null).body(productService.createProduct(product));
     }
 
     @PutMapping(path = "/update")
-    @Operation(summary = "Updates a product", method = "PUT", description = "Updates a product")
+    @Operation(summary = "Updates a product", method = "PUT", description = "Updates a product. ID must be provided.")
     @ApiResponse(responseCode = "200", description = "Product Updated", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class))
     })
     @ApiResponse(responseCode = "400", description = "Bad Request")
     @ApiResponse(responseCode = "404", description = "Product Not Found")
     @ApiResponse(responseCode = "500", description = "Internal Server Error While Updating Product :(\nPlease Try Again Later")
-    public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
-        return ResponseEntity.ok(productService.saveProduct(product));
+    public ResponseEntity<Product> updateProduct(@RequestBody UpdateProductDTO product) {
+        return ResponseEntity.ok(productService.updateProduct(product));
     }
 
     @DeleteMapping(path = "/delete")
-    @Operation(summary = "Deletes a product", method = "DELETE", description = "Deletes a product")
+    @Operation(summary = "Deletes a product", method = "DELETE", description = "Deletes a product. ID must be provided.")
     @ApiResponse(responseCode = "200", description = "Product Deleted")
     @ApiResponse(responseCode = "400", description = "Bad Request")
     @ApiResponse(responseCode = "404", description = "Product Not Found")

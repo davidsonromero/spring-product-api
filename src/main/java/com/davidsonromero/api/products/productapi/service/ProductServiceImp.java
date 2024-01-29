@@ -1,5 +1,7 @@
 package com.davidsonromero.api.products.productapi.service;
 
+import com.davidsonromero.api.products.productapi.dtos.CreateProductDTO;
+import com.davidsonromero.api.products.productapi.dtos.UpdateProductDTO;
 import com.davidsonromero.api.products.productapi.models.Product;
 import com.davidsonromero.api.products.productapi.models.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +16,24 @@ public class ProductServiceImp implements ProductService {
 
     @Autowired
     ProductRepository productRepository;
-    public Product saveProduct(Product product) {
-        product.setPrice(cutToTwoDecimalPlaces(product.getPrice()));
-        if(!verifyProductAttributes(product).isValid()){
-            throw new IllegalArgumentException(verifyProductAttributes(product).getMessage());
+    public Product createProduct(CreateProductDTO product) {
+        Product productToCreate = product.toProduct();
+        productToCreate.setPrice(cutToTwoDecimalPlaces(productToCreate.getPrice()));
+        ProductVerificationResult result = verifyProductAttributes(productToCreate);
+        if(!result.isValid()){
+            throw new IllegalArgumentException(result.getMessage());
         }
-        return productRepository.save(product);
+        return productRepository.save(productToCreate);
+    }
+
+    public Product updateProduct(UpdateProductDTO product) {
+        Product productToUpdate = product.toProduct();
+        productToUpdate.setPrice(cutToTwoDecimalPlaces(productToUpdate.getPrice()));
+        ProductVerificationResult result = verifyProductAttributes(productToUpdate);
+        if(!result.isValid()){
+            throw new IllegalArgumentException(result.getMessage());
+        }
+        return productRepository.save(productToUpdate);
     }
 
     public ProductVerificationResult verifyProductAttributes(Product product){
