@@ -14,7 +14,6 @@ public class ProductServiceImp implements ProductService {
 
     @Autowired
     ProductRepository productRepository;
-    @Override
     public Product saveProduct(Product product) {
         product.setPrice(cutToTwoDecimalPlaces(product.getPrice()));
         if(!verifyProductAttributes(product).isValid()){
@@ -56,7 +55,6 @@ public class ProductServiceImp implements ProductService {
         return bd.doubleValue();
     }
 
-    @Override
     public Product getProduct(Long id) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("You must provide a valid id");
@@ -64,17 +62,14 @@ public class ProductServiceImp implements ProductService {
         return productRepository.findById(id).get();
     }
 
-    @Override
     public Iterable<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
-    @Override
     public Iterable<Product> getAllProductsPaged(int page, int size) {
         return productRepository.findAll(PageRequest.of(page, size)).getContent();
     }
 
-    @Override
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
